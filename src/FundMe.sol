@@ -5,7 +5,7 @@ import "./PriceConverter.sol";
 
 contract FundMe {
     using PriceConverter for uint256;
-    address payable private immutable owner;
+    address payable public immutable owner;
     address private priceFeed;
     uint256 private immutable amount;
 

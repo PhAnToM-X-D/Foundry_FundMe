@@ -5,17 +5,17 @@ import "../src/PriceConverter.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {HelperConfig} from "../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
 
 contract FundMeTest is Test {
     using PriceConverter for uint256;
     FundMe fundme;
     HelperConfig helperConfig;
+    DeployFundMe deploy;
     uint256 constant VALUE = 1e18;
     address constant USER = address(1);
 
     function setUp() external {
-        DeployFundMe deploy = new DeployFundMe();
+        deploy = new DeployFundMe();
         (fundme, helperConfig) = deploy.run();
     }
 
@@ -38,4 +38,27 @@ contract FundMeTest is Test {
         assertEq(fundme.addressToAmountFunded(USER),VALUE);
         assertEq(fundme.getAmountInContractInUSD(),VALUE.getConversionRate(fundme.returnPriceFeedAddress()));
     }
+
+    function testwithdrawerWhenNotOwner() public {
+        vm.expectRevert();
+        vm.prank(address(0));
+        fundme.withdraw();
+    }
+
+    modifier funded() {
+        vm.deal(USER, 10 ether);
+        vm.startPrank(USER);
+        fundme.fund{value: VALUE}();
+        vm.stopPrank();
+        _;
+    }
+
+    function testWithdrawWhenOwner() public funded {
+        uint256 h = address(fundme).balance;
+        vm.prank(payable(address(fundme.owner())));
+        fundme.withdraw();
+        assertEq(fundme.addressToAmountFunded(USER),0);
+        assertEq((address(fundme).balance),h-VALUE);
+    }
 }
+
