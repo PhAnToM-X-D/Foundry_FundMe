@@ -7,7 +7,7 @@ import {HelperConfig} from "../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
 
-contract FundMeTest is Test{
+contract FundMeTest is Test {
     using PriceConverter for uint256;
     FundMe fundme;
     HelperConfig helperConfig;
@@ -17,7 +17,7 @@ contract FundMeTest is Test{
         (fundme, helperConfig) = deploy.run();
     }
 
-    function testminusd () external view {
+    function testminusd() external view {
         uint256 expected = 5 * 1e18;
         assertEq(fundme.getminAmountThatCanBeFundedInUSD(), expected);
     }
@@ -25,7 +25,5 @@ contract FundMeTest is Test{
     function testConversionRate() external view {
         uint256 eth = 1 ether;
         assertEq(eth.getConversionRate(fundme.returnPriceFeedAddress()), fundme.getConversionRateFor1());
-    }    
-    
-        
+    }
 }
