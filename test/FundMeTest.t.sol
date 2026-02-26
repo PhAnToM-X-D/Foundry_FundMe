@@ -14,4 +14,9 @@ contract FundMeTest is Test {
         DeployFundMe deploy = new DeployFundMe();
         (fundme, helperConfig) = deploy.run();
     }
+
+    function testminusd () external view {
+        uint256 expected = 5 * 1e18;
+        assertEq(fundme.getminAmountThatCanBeFundedInUSD(), expected);
+    }
 }
