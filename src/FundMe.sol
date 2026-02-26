@@ -36,4 +36,13 @@ contract FundMe {
         }
         funders = new address[](0);
     }
+
+    function getAmountInContractInUSD() public view returns (uint256) {
+        return address(this).balance.getConversionRate(priceFeed);
+    }
+
+    function getConversionRate() public view returns (uint256) {
+        uint256 eth = 1 ether;
+        return eth.getConversionRate(priceFeed);
+    }
 }
