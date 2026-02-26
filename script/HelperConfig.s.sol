@@ -25,18 +25,14 @@ contract HelperConfig is Script {
         }
     }
 
-    function getNetworkConfig() public view returns (NetworkConfig memory) {
-        return currentChainNetworkConfig;
-    }
-
-    function getChainId() public view returns (uint256) {
-        return block.chainid;
-    }
-
     function createAnvilEthConfig() public returns (address) {
         vm.startBroadcast();
         MockV3Aggregator mockPriceFeed = new MockV3Aggregator(8, 2000e8);
         vm.stopBroadcast();
         return address(mockPriceFeed);
+    }
+
+    function getNetworkConfigAddress() public view returns (address) {
+        return currentChainNetworkConfig.priceFeed;
     }
 }
