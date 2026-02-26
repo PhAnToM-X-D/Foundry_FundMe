@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import {DeployFundMe} from "../script/DeployFundMe.s.sol";
+import "../src/PriceConverter.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {HelperConfig} from "../script/HelperConfig.s.sol";
 import {Test, console} from "forge-std/Test.sol";
 import {StdCheats} from "forge-std/StdCheats.sol";
 
-contract FundMeTest is Test {
+contract FundMeTest is Test{
+    using PriceConverter for uint256;
     FundMe fundme;
     HelperConfig helperConfig;
 
@@ -19,4 +21,11 @@ contract FundMeTest is Test {
         uint256 expected = 5 * 1e18;
         assertEq(fundme.getminAmountThatCanBeFundedInUSD(), expected);
     }
+
+    function testConversionRate() external view {
+        uint256 eth = 1 ether;
+        assertEq(eth.getConversionRate(fundme.returnPriceFeedAddress()), fundme.getConversionRateFor1());
+    }    
+    
+        
 }

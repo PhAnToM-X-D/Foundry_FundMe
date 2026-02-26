@@ -6,7 +6,7 @@ import "./PriceConverter.sol";
 contract FundMe {
     using PriceConverter for uint256;
     address payable private immutable owner;
-    address public priceFeed;
+    address private priceFeed;
     uint256 private immutable amount;
 
     address[] public funders;
@@ -41,12 +41,16 @@ contract FundMe {
         return address(this).balance.getConversionRate(priceFeed);
     }
 
-    function getConversionRate() public view returns (uint256) {
+    function getConversionRateFor1() public view returns (uint256) {
         uint256 eth = 1 ether;
         return eth.getConversionRate(priceFeed);
     }
 
     function getminAmountThatCanBeFundedInUSD() public view returns (uint256) {
         return amount;
+    }
+
+    function returnPriceFeedAddress () external view returns(address) {
+        return priceFeed;
     }
 }
