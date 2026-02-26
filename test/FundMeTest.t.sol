@@ -28,15 +28,15 @@ contract FundMeTest is Test {
         uint256 eth = 1 ether;
         assertEq(eth.getConversionRate(fundme.returnPriceFeedAddress()), fundme.getConversionRateFor1());
     }
-    
+
     function testfunder1() public {
         vm.deal(USER, 10 ether);
         vm.startPrank(USER);
         fundme.fund{value: VALUE}();
         vm.stopPrank();
-        assertEq(fundme.funders(0),USER);
-        assertEq(fundme.addressToAmountFunded(USER),VALUE);
-        assertEq(fundme.getAmountInContractInUSD(),VALUE.getConversionRate(fundme.returnPriceFeedAddress()));
+        assertEq(fundme.funders(0), USER);
+        assertEq(fundme.addressToAmountFunded(USER), VALUE);
+        assertEq(fundme.getAmountInContractInUSD(), VALUE.getConversionRate(fundme.returnPriceFeedAddress()));
     }
 
     function testwithdrawerWhenNotOwner() public {
@@ -57,8 +57,8 @@ contract FundMeTest is Test {
         uint256 h = address(fundme).balance;
         vm.prank(payable(address(fundme.owner())));
         fundme.withdraw();
-        assertEq(fundme.addressToAmountFunded(USER),0);
-        assertEq((address(fundme).balance),h-VALUE);
+        assertEq(fundme.addressToAmountFunded(USER), 0);
+        assertEq((address(fundme).balance), h - VALUE);
     }
 }
 
