@@ -10,7 +10,7 @@ contract FundMeTest is Test {
     FundMe fundme;
     HelperConfig helperConfig;
 
-    function setup() external {
+    function setUp() external {
         DeployFundMe deploy = new DeployFundMe();
         (fundme, helperConfig) = deploy.run();
     }
