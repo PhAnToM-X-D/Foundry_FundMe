@@ -26,6 +26,7 @@ contract FundMe {
     function fund() public payable {
         require(msg.value.getConversionRate(priceFeed) >= amount, "You need to spend more ETH!");
         addressToAmountFunded[msg.sender] += msg.value;
+        funders.push(msg.sender);
     }
 
     function withdraw() public onlyOwner {
